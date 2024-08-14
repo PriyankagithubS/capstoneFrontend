@@ -10,7 +10,7 @@ import Button from "../Button";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { app } from "../../utils/firebase";
 import { useCreateTaskMutation, useUpdateTaskMutation } from "../../redux/slices/api/taskApiSlice";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { dateFormatter } from "../../utils/index";
 
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
