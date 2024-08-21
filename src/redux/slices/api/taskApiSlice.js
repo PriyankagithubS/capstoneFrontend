@@ -4,7 +4,7 @@ const AUTH_URL = "/user";
 
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-<<<<<<< HEAD
+
         getDashboardStats: builder.query({
             query: (token) => ({
                 url: `${TASKS_URL}/dashboard`,
