@@ -5,87 +5,107 @@ import { apiSlice } from "../apiSlice";
 export const taskApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getDashboardStats: builder.query({
-            query: () => ({
+            query: (token) => ({
                 url: `${TASKS_URL}/dashboard`,
                 method: "GET",
-                credentials: "include",
-            })
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                },
+            }),
         }),
         getAllTasks: builder.query({
-            query: ({ strQuery = "", isTrashed = "", search = "" }) => ({
+            query: ({ strQuery = "", isTrashed = "", search = "", token }) => ({
                 url: `${TASKS_URL}?stage=${strQuery}&isTrashed=${isTrashed}&search=${search}`,
                 method: "GET",
-                credentials: "include",
-            })
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                },
+            }),
         }),
         createTask: builder.mutation({
-            query: (data) => ({
+            query: ({ data, token }) => ({
                 url: `${TASKS_URL}/create`,
                 method: "POST",
                 body: data,
-                credentials: "include",
-            })
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                },
+            }),
         }),
         duplicateTask: builder.mutation({
-            query: (id) => ({
-                url: `${TASKS_URL}/duplicate/${id}`, // The ID is passed in the URL
-                method: "POST", // Using POST for the duplicate operation
-                body: {}, // An empty body if the backend doesn't expect any data
-                credentials: "include", // Include credentials for authentication
+            query: ({ id, token }) => ({
+                url: `${TASKS_URL}/duplicate/${id}`,
+                method: "POST",
+                body: {}, // Empty body if not needed
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                },
             }),
         }),
 
         updateTask: builder.mutation({
-            query: (data) => ({
+            query: ({ data, token }) => ({
                 url: `${TASKS_URL}/update/${data._id}`,
                 method: "PUT",
                 body: data,
-                credentials: "include",
-            })
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                },
+            }),
         }),
 
         trashTask: builder.mutation({
-            query: (id) => ({
+            query: ({ id, token }) => ({
                 url: `${TASKS_URL}/${id}`,
                 method: "PUT",
-                credentials: "include"
-            })
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                },
+            }),
         }),
         createSubTask: builder.mutation({
-            query: (data, id) => ({
+            query: ({ data, id, token }) => ({
                 url: `${TASKS_URL}/create-subtask/${id}`,
                 method: "PUT",
                 body: data,
-                credentials: "include",
-            })
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                },
+            }),
         }),
         getSingleTask: builder.query({
-            query: (id) => ({
+            query: ({ id, token }) => ({
                 url: `${TASKS_URL}/${id}`,
                 method: "GET",
-                credentials: "include",
-            })
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                },
+            }),
         }),
         postTaskActivity: builder.mutation({
-            query: ({ data, id }) => ({
+            query: ({ data, id, token }) => ({
                 url: `${TASKS_URL}/activity/${id}`,
                 method: "POST",
                 body: data,
-                credentials: "include",
-            })
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                },
+            }),
         }),
         deleteRestoreTask: builder.mutation({
-            query: (id,actionType) => ({
+            query: ({ id, actionType, token }) => ({
                 url: `${TASKS_URL}/delete-restore/${id}?actionType=${actionType}`,
                 method: "DELETE",
-                credentials: "include",
-            })
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                },
+            }),
         }),
-
     }),
 });
 
-export const { useGetDashboardStatsQuery,
+export const {
+    useGetDashboardStatsQuery,
     useGetAllTasksQuery,
     useCreateTaskMutation,
     useDuplicateTaskMutation,
@@ -93,5 +113,6 @@ export const { useGetDashboardStatsQuery,
     useTrashTaskMutation,
     useCreateSubTaskMutation,
     useGetSingleTaskQuery,
-    usePostTaskActivityMutation ,
-useDeleteRestoreTaskMutation} = taskApiSlice;
+    usePostTaskActivityMutation,
+    useDeleteRestoreTaskMutation,
+} = taskApiSlice;
