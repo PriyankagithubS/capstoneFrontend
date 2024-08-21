@@ -1,16 +1,15 @@
 import { apiSlice } from "../apiSlice";
 
-const AUTH_URL = "/user";
+const TASKS_URL = "/task";
 
-export const authApiSlice = apiSlice.injectEndpoints({
+export const taskApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-
         getDashboardStats: builder.query({
             query: (token) => ({
                 url: `${TASKS_URL}/dashboard`,
                 method: "GET",
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                    'Authorization': `Bearer ${token}`,
                 },
             }),
         }),
@@ -19,7 +18,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 url: `${TASKS_URL}?stage=${strQuery}&isTrashed=${isTrashed}&search=${search}`,
                 method: "GET",
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                    'Authorization': `Bearer ${token}`,
                 },
             }),
         }),
@@ -29,7 +28,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 method: "POST",
                 body: data,
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                    'Authorization': `Bearer ${token}`,
                 },
             }),
         }),
@@ -37,30 +36,28 @@ export const authApiSlice = apiSlice.injectEndpoints({
             query: ({ id, token }) => ({
                 url: `${TASKS_URL}/duplicate/${id}`,
                 method: "POST",
-                body: {}, // Empty body if not needed
+                body: {},
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                    'Authorization': `Bearer ${token}`,
                 },
             }),
         }),
-
         updateTask: builder.mutation({
             query: ({ data, token }) => ({
                 url: `${TASKS_URL}/update/${data._id}`,
                 method: "PUT",
                 body: data,
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                    'Authorization': `Bearer ${token}`,
                 },
             }),
         }),
-
         trashTask: builder.mutation({
             query: ({ id, token }) => ({
                 url: `${TASKS_URL}/${id}`,
                 method: "PUT",
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                    'Authorization': `Bearer ${token}`,
                 },
             }),
         }),
@@ -70,7 +67,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 method: "PUT",
                 body: data,
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                    'Authorization': `Bearer ${token}`,
                 },
             }),
         }),
@@ -79,7 +76,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 url: `${TASKS_URL}/${id}`,
                 method: "GET",
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                    'Authorization': `Bearer ${token}`,
                 },
             }),
         }),
@@ -89,7 +86,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 method: "POST",
                 body: data,
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Include the token in headers
+                    'Authorization': `Bearer ${token}`,
                 },
             }),
         }),
@@ -98,39 +95,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 url: `${TASKS_URL}/delete-restore/${id}?actionType=${actionType}`,
                 method: "DELETE",
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Include the token in headers
-
-        login: builder.mutation({
-            query: (data) => ({
-                url: `${AUTH_URL}/login`,
-                method: "POST",
-                body: data,
-                headers: {
-                    'Authorization': `Bearer ${data.token}`, // Token should be passed in the body or via a function argument
-                },
-            }),
-        }),
-        register: builder.mutation({
-            query: (data) => ({
-                url: `${AUTH_URL}/register`,
-                method: "POST",
-                body: data,
-            }),
-        }),
-        logout: builder.mutation({
-            query: (token) => ({
-                url: `${AUTH_URL}/logout`,
-                method: "POST",
-                headers: {
-                    'Authorization': `Bearer ${token}`, // Token passed via the headers
-
+                    'Authorization': `Bearer ${token}`,
                 },
             }),
         }),
     }),
 });
 
-<<<<<<< HEAD
 export const {
     useGetDashboardStatsQuery,
     useGetAllTasksQuery,
@@ -143,6 +114,3 @@ export const {
     usePostTaskActivityMutation,
     useDeleteRestoreTaskMutation,
 } = taskApiSlice;
-=======
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation } = authApiSlice;
->>>>>>> 390589f03622fab11ccab21688550bf279310a9a
