@@ -99,7 +99,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 method: "DELETE",
                 headers: {
                     'Authorization': `Bearer ${token}`, // Include the token in headers
-=======
+
         login: builder.mutation({
             query: (data) => ({
                 url: `${AUTH_URL}/login`,
@@ -123,7 +123,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${token}`, // Token passed via the headers
->>>>>>> 390589f03622fab11ccab21688550bf279310a9a
+
                 },
             }),
         }),
