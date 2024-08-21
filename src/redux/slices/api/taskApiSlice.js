@@ -1,9 +1,10 @@
-const TASKS_URL = "/task";
-
 import { apiSlice } from "../apiSlice";
 
-export const taskApiSlice = apiSlice.injectEndpoints({
+const AUTH_URL = "/user";
+
+export const authApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
+<<<<<<< HEAD
         getDashboardStats: builder.query({
             query: (token) => ({
                 url: `${TASKS_URL}/dashboard`,
@@ -98,12 +99,38 @@ export const taskApiSlice = apiSlice.injectEndpoints({
                 method: "DELETE",
                 headers: {
                     'Authorization': `Bearer ${token}`, // Include the token in headers
+=======
+        login: builder.mutation({
+            query: (data) => ({
+                url: `${AUTH_URL}/login`,
+                method: "POST",
+                body: data,
+                headers: {
+                    'Authorization': `Bearer ${data.token}`, // Token should be passed in the body or via a function argument
+                },
+            }),
+        }),
+        register: builder.mutation({
+            query: (data) => ({
+                url: `${AUTH_URL}/register`,
+                method: "POST",
+                body: data,
+            }),
+        }),
+        logout: builder.mutation({
+            query: (token) => ({
+                url: `${AUTH_URL}/logout`,
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Token passed via the headers
+>>>>>>> 390589f03622fab11ccab21688550bf279310a9a
                 },
             }),
         }),
     }),
 });
 
+<<<<<<< HEAD
 export const {
     useGetDashboardStatsQuery,
     useGetAllTasksQuery,
@@ -116,3 +143,6 @@ export const {
     usePostTaskActivityMutation,
     useDeleteRestoreTaskMutation,
 } = taskApiSlice;
+=======
+export const { useLoginMutation, useRegisterMutation, useLogoutMutation } = authApiSlice;
+>>>>>>> 390589f03622fab11ccab21688550bf279310a9a
