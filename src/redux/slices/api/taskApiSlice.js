@@ -53,14 +53,17 @@ export const taskApiSlice = apiSlice.injectEndpoints({
             }),
         }),
         trashTask: builder.mutation({
-            query: ({ id, token }) => ({
-                url: `${TASKS_URL}/${id}`,
-                method: "PUT",
+            query: ({ id, actionType, token }) => ({
+                url: `${TASKS_URL}/${id}?actionType=${actionType}`,
+                method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
                 },
             }),
         }),
+
+
         createSubTask: builder.mutation({
             query: ({ data, id, token }) => ({
                 url: `${TASKS_URL}/create-subtask/${id}`,
@@ -92,13 +95,15 @@ export const taskApiSlice = apiSlice.injectEndpoints({
         }),
         deleteRestoreTask: builder.mutation({
             query: ({ id, actionType, token }) => ({
-                url: `${TASKS_URL}/delete-restore/${id}?actionType=${actionType}`,
-                method: "DELETE",
+                url: id ? `${TASKS_URL}/${id}?actionType=${actionType}` : `${TASKS_URL}?actionType=${actionType}`,
+                method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
                 },
             }),
         }),
+
     }),
 });
 

@@ -30,14 +30,23 @@ const Tasks = () => {
   const [open, setOpen] = useState(false);
 
   const status = params?.status || "";
-  
-  const { data, isLoading } = useGetAllTasksQuery({
+  const token = localStorage.getItem("authToken"); // Example of fetching token from localStorage
+
+  const { data, isLoading, error } = useGetAllTasksQuery({
     strQuery: status,
     isTrashed: "",
     search: "",
+    token,
   });
 
-  console.log("Fetched data:", data);
+  if (error) {
+    console.error("Error fetching tasks:", error);
+    return (
+      <div className="py-10">
+        <p className="text-red-500">Error loading tasks. Please try again later.</p>
+      </div>
+    );
+  }
 
   return isLoading ? (
     <div className='py-10'>
@@ -66,7 +75,7 @@ const Tasks = () => {
               label='In Progress'
               className={TASK_TYPE["in progress"]}
             />
-            <TaskTitle label='completed' className={TASK_TYPE.completed} />
+            <TaskTitle label='Completed' className={TASK_TYPE.completed} />
           </div>
         )}
         {selected !== 1 ? (

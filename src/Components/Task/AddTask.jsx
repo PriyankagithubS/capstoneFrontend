@@ -15,8 +15,8 @@ import { dateFormatter } from "../../utils/index";
 
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORIRY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
-const uploadedFileURLs = [];
-const AddTask = ({ open, setOpen, task={} }) => {
+
+const AddTask = ({ open, setOpen, task = {}, token }) => {
     const defaultValues = {
         title: task?.title || "",
         date: task?.date ? dateFormatter(task.date) : dateFormatter(new Date()),
@@ -25,7 +25,6 @@ const AddTask = ({ open, setOpen, task={} }) => {
         priority: task?.priority?.toUpperCase() || PRIORIRY[2],
         assets: task?.assets || [],
     };
-
 
     const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues });
     const [team, setTeam] = useState(defaultValues.team);
@@ -69,22 +68,27 @@ const AddTask = ({ open, setOpen, task={} }) => {
     const submitHandler = async (data) => {
         try {
             setUploading(true);
-            const uploadedFileURLs = await Promise.all(
-                Array.from(assets).map((file) => uploadFile(file))
-            );
+
+            const uploadedFileURLs = assets.length
+                ? await Promise.all(Array.from(assets).map((file) => uploadFile(file)))
+                : [];
+
             setUploading(false);
 
-            const newData = {
+            const stage = data.stage ? data.stage.toUpperCase() : LISTS[0];
+            const priority = data.priority ? data.priority.toUpperCase() : PRIORIRY[2];
+
+            console.log("Data to be sent:", {
                 ...data,
                 assets: [...URLS, ...uploadedFileURLs],
                 team,
                 stage,
                 priority,
-            };
+            });
 
             const response = task?._id
-                ? await updateTask({ ...newData, _id: task._id }).unwrap()
-                : await createTask(newData).unwrap();
+                ? await updateTask({ data: { ...data, _id: task._id }, token }).unwrap()
+                : await createTask({ data: { ...data, assets: [...URLS, ...uploadedFileURLs], team, stage, priority }, token }).unwrap();
 
             toast.success(response.message);
             setTimeout(() => {
@@ -101,10 +105,6 @@ const AddTask = ({ open, setOpen, task={} }) => {
             setUploading(false);
         }
     };
-
-
-
-
 
     return (
         <ModalWrapper open={open} setOpen={setOpen}>
@@ -194,9 +194,9 @@ const AddTask = ({ open, setOpen, task={} }) => {
 
                         <Button
                             type='button'
-                            className='bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto'
-                            onClick={() => setOpen(false)}
+                            className='bg-white px-8 text-sm font-semibold text-gray-900 hover:bg-gray-100'
                             label='Cancel'
+                            onClick={() => setOpen(false)}
                         />
                     </div>
                 </div>
@@ -206,6 +206,3 @@ const AddTask = ({ open, setOpen, task={} }) => {
 };
 
 export default AddTask;
-
-
-
